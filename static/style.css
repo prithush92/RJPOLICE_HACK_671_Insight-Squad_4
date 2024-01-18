@@ -1,0 +1,503 @@
+* {
+    padding: 0;
+    margin: 0;
+    scroll-behavior: smooth;
+}
+
+#scrollTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    /* padding: 10px 15px; */
+    cursor: pointer;
+    border-radius: 50%;
+    /* background-image: url(../images/top-btn-img.png); */
+
+
+}
+
+#logo {
+    border-radius: 50%;
+}
+
+body {
+    height: 2000px;
+    /* background-image: url("https://cdn.discordapp.com/attachments/1139680177044082768/1194557512976973824/crop-bg.png?ex=65b0c960&is=659e5460&hm=7b4418217d3fbef25ec946562e839623442468c785315b1f47eb56fe1bff815f&"); */
+    background-image: url("https://cdn.discordapp.com/attachments/1075699203046641687/1196940797996716112/web.png?ex=65b974fc&is=65a6fffc&hm=c9148856e7edf36fd16734a70e9bec19cff16fd78727f3bb0c984b6cd157aa66&");
+    background-size: 1520px 728px;
+    background-repeat: no-repeat;
+    background-color: #343541;
+    animation: fade1n 5s;
+    color: #ccc;
+    font-family: 'Source Sans Pro Topnav', sans-serif
+}
+
+@keyframes scroll {
+    from {
+        transform: translate(0, -10px);
+    }
+
+    to {
+        transform: translate(0);
+    }
+}
+
+@keyframes fade1n {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+/* ------------------------------------------------------------------------------------------------------------- */
+.home_page_text {
+    margin-top: 300px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* height: 100vh; */
+    width: 100%;
+}
+
+h1 {
+    color: #333;
+    font-family: tahoma;
+    font-size: 48px;
+    font-weight: 100;
+    line-height: 1.5;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    width: 550px;
+}
+
+h1 span {
+    font-size: 40px;
+    /* margin-left: 40px; */
+}
+
+.message {
+    background-color: #86d9e5;
+    color: #333;
+    display: block;
+    font-weight: 900;
+    overflow: hidden;
+    position: absolute;
+    padding-left: 0.5rem;
+    top: 0.2rem;
+    left: 270px;
+    animation: openclose 7s ease-in-out infinite;
+}
+
+
+
+.word1,
+.word2,
+.word3 {
+    font-family: tahoma;
+}
+
+@keyframes openclose {
+    0% {
+        top: 0.2rem;
+        width: 0;
+    }
+
+    5% {
+        width: 0;
+    }
+
+    15% {
+        width: 230px;
+    }
+
+    30% {
+        top: 0.2rem;
+        width: 230px;
+    }
+
+    33% {
+        top: 0.2rem;
+        width: 0;
+    }
+
+    35% {
+        top: 0.2rem;
+        width: 0;
+    }
+
+    38% {
+        top: -4.5rem;
+
+    }
+
+    48% {
+        top: -4.5rem;
+        width: 190px;
+    }
+
+    62% {
+        top: -4.5rem;
+        width: 190px;
+    }
+
+    66% {
+        top: -4.5rem;
+        width: 0;
+        text-indent: 0;
+    }
+
+    71% {
+        top: -9rem;
+        width: 0;
+        text-indent: 5px;
+    }
+
+    86% {
+        top: -9rem;
+        width: 285px;
+    }
+
+    95% {
+        top: -9rem;
+        width: 285px;
+    }
+
+    98% {
+        top: -9rem;
+        width: 0;
+        text-indent: 5px;
+    }
+
+    100% {
+        top: 0;
+        width: 0;
+        text-indent: 0;
+    }
+}
+
+/* --------------------------------------------------- Navbar ----------------------------------------- */
+.nav_box {
+    align-items: center;
+    justify-content: center;
+    margin: 20px 20px 20px 20px;
+    position: sticky;
+    height: 50px;
+    background-color: #fdfdfd00;
+    /* color: #fff; */
+}
+
+.nav li {
+    padding-inline: 20px;
+}
+
+
+
+/* Hover state for the navbar link */
+.nav-item a.nav-link {
+    position: relative;
+    font-size: 18px;
+    /* Adjust the font size as needed */
+    font-family: 'Source Sans Pro Topnav', sans-serif;
+    /* Replace 'Your Font Family' with your desired font */
+    /* color: #ffffff; */
+    /* Change the font color as needed */
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+/* Active state for the navbar link */
+.nav-item a.nav-link.active {
+    font-weight: bold;
+    /* Optionally make the active link bold */
+}
+
+/* Hover state for the navbar link */
+.nav-item a.nav-link:hover {
+    text-decoration: none;
+    /* Remove the default underline */
+    color: #ff0000;
+    /* Change the color on hover */
+}
+
+/* Add underline animation on hover */
+.nav-item a.nav-link::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #ff0000;
+    /* Change the underline color on hover */
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.3s ease;
+}
+
+.nav-item a.nav-link:hover::before {
+    visibility: visible;
+    transform: scaleX(1);
+    /* color: blue; */
+}
+
+.nav-underline .nav-link.active,
+.nav-underline .show>.nav-link {
+    font-weight: 700;
+    color: #7de9e8;
+    border-bottom-color: currentcolor;
+}
+
+
+
+/* =======------------ try model ----------==== */
+.trydemo-btn {
+    align-items: center;
+    background-color: #3498db;
+    color: #fff;
+    transition: box-shadow 0.5s ease-in-out;
+    border: 2px solid #3498db;
+
+    /* font-family: 'Poppins', sans-serif; */
+}
+
+/* Glow effect on hover */
+.trydemo-btn:hover {
+    box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.7);
+    /* Red glow effect */
+    background-color: #ff0000;
+    border: 2px solid red;
+}
+
+/* Glow effect on click */
+.trydemo-btn:active {
+    box-shadow: 0 0 15px 7px rgba(255, 0, 0, 0.9);
+    /* Increase glow on click */
+    background-color: #ff0000;
+    border: 2px solid red;
+}
+
+.try_demo_btn_div {
+    width: 130px;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    margin-top: 200px;
+    margin-bottom: 100px;
+}
+
+
+/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx     Short Summary    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
+
+.short_sum {
+    margin: 10px auto;
+    padding: 20px;
+    height: 540px;
+    width: 720px;
+    border: 2px solid black;
+
+}
+
+.short_sum h4 {
+    margin-top: 20px;
+}
+
+
+/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx     page -2    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
+.page2 {
+    padding-top: 50px;
+    margin: 60px auto 50px auto;
+}
+
+.page2 h4 {
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    padding: 30px;
+    background-color: #2a2a34;
+
+    border-radius: 15px;
+}
+
+
+/* --------------------- complaint_box ------------------- */
+
+.complaint_box {
+    /* display: none; */
+    margin: auto;
+    padding: 20px;
+    width: 70%;
+    overflow: auto;
+    height: 540px;
+    background-color: #2f303b;
+    border-radius: 15px;
+
+
+}
+
+.complaint_box h4 {
+    align-items: center;
+    justify-content: center;
+    margin: 15px auto 30px auto;
+    width: fit-content;
+
+}
+
+.file-input-container {
+    display: inline;
+}
+
+.complaint_box_text {
+    /* border: 2px solid blueviolet; */
+    text-align: justify;
+    padding: 20px;
+    border-radius: 20px;
+    margin: auto;
+    width: 100%;
+    height: 70%;
+    /* background-color: #000000a8; */
+    color: #fff;
+    background: transparent;
+}
+
+
+.query_container {
+    border: 2px solid black;
+}
+
+.qurey_box_btn {
+    margin-top: 25px;
+}
+
+.qurey_box_btn button {
+    float: right;
+    margin-right: 10px;
+    /* width: 500px; */
+    padding-inline: 10px;
+    cursor: pointer;
+}
+
+.qurey_box_btn input {
+    margin-left: 10px;
+}
+
+
+
+
+/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx   After Submission  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
+
+#congratulations {
+    display: none;
+} 
+
+.after_sub {
+    /* display: none; */
+    height: 692px;
+    margin-top: 70px;
+    margin-bottom: 10px;
+}
+
+.after_sub h5 {
+    margin: 50px auto 10px auto;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    background-color: #2a2a34;
+    width: 60%;
+    overflow: auto;
+    border-radius: 15px;
+}
+
+
+
+
+.response_box {
+    justify-content: center;
+    align-items: center;
+    /* border: 2px solid black; */
+    display: flex;
+    background-color: #2f303b;
+    border-radius: 15px;
+    width: 98%;
+    margin: 30px auto;
+}
+
+
+
+/* ------------------ Summary box ----------------------------- */
+
+
+.Summary_box {
+    /* float: right; */
+    /* background-color: rgb(146, 192, 233); */
+    margin: 10px 5px 10px 10px;
+    /* padding: 20px; */
+    width: 31%;
+    display: inline-block;
+    box-sizing: border-box;
+    top: 10px;
+    border-radius: 15px;
+
+}
+
+.Summary_box h4 {
+    align-items: center;
+    justify-content: center;
+    margin: 15px auto 30px auto;
+    width: fit-content;
+    /* border: 2px solid rgb(30, 0, 255); */
+    /* font-family: 'Poppins', sans-serif; */
+}
+
+.Summary_box textarea {
+    text-align: justify;
+    padding: 20px;
+    border-radius: 20px;
+    margin: auto;
+    width: 100%;
+    height: 70%;
+    background: transparent;
+
+}
+
+/* ----------------- Applicable_Charges------------------ */
+
+.Applicable_Charges {
+    margin: 10px 10px 10px 5px;
+    /* padding: 20px; */
+    width: 65%;
+    display: inline-block;
+    box-sizing: border-box;
+    top: 10px;
+    border-radius: 15px;
+}
+
+.Applicable_Charges h4 {
+    align-items: center;
+    justify-content: center;
+    margin: 15px auto 30px auto;
+    width: fit-content;
+    /* font-family: 'Poppins', sans-serif; */
+}
+
+
+.Applicable_Charges textarea {
+    text-align: justify;
+    padding: 20px;
+    border-radius: 20px;
+    margin: auto;
+    width: 100%;
+    height: 70%;
+    background: transparent;
+
+}
