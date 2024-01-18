@@ -1,5 +1,6 @@
 import streamlit as st
-import os, re, io
+import os
+import re
 import pandas as pd
 from langchain_community.vectorstores import Chroma
 from langchain.document_loaders.csv_loader import CSVLoader
@@ -7,7 +8,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 from deep_translator import GoogleTranslator
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.prompts import ChatPromptTemplate, PromptTemplate
+from langchain.prompts import PromptTemplate
 
 from langchain_openai import OpenAI
 from langchain.chains import LLMChain
@@ -16,14 +17,34 @@ from PIL import Image
 import pytesseract as pt
 import fitz
 from dotenv import load_dotenv
+import pytesseract
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Adjust the path accordingly
 
 # Import other required libraries
+st.set_page_config(layout="wide", page_title="LegalEase", page_icon="static\images\Rajasthan_Police_Logo.png")
+css = f"""
+<style>
+[data-testid="stAppViewContainer"] > .main {{
+background-image: url("https://cdn.discordapp.com/attachments/1182747246605897818/1197344683546923100/20240118_062935_0000.png?ex=65baed22&is=65a87822&hm=fb6157c01ab309d2b6f528e679e830faecc3d0a905acbc662e66cce84a202cec&");
+background-size: 120%;
+background-height: 2200px;
+background-position: top left;
+background-repeat: repeat;
+background-attachment: local;
+}}
+
+[data-testid="stHeader"] {{
+background: rgba(0,0,0,0);
+}}
+</style>
+"""
+
+
+st.markdown(css, unsafe_allow_html=True)
 
 # Load Private Credentials
 load_dotenv()
 
-import pytesseract
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Adjust the path accordingly
 
 # Function to convert and extract text from PDF or image
 def convert_and_extract_text(uploaded_file, output_folder):
@@ -76,9 +97,6 @@ def extract_text(image_path, lang="eng+hin"):
     # Open the image
     img = Image.open(image_path)
 
-    # Experiment with image preprocessing
-    # Apply additional preprocessing steps as needed
-
     # Experiment with different page segmentation modes
     custom_config = r'--psm 6'  # Assume a single uniform block of text
 
@@ -104,7 +122,7 @@ def translate_large_text(text, chunk_size=500):
 def get_summary(complaint):
     try:
         GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-        model = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.2)
+        model = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.1)
 
         prompt = PromptTemplate.from_template(
             """Provide a concise one-line summary of the main incident in the {complaint}, excluding names, locations, contact information and all irrlevant details and only return the offences committed, for extracting applicable sections and acts.
@@ -117,7 +135,7 @@ def get_summary(complaint):
     
     except:
         OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-        model = OpenAI(temperature=0.2)
+        model = OpenAI(temperature=0.1)
 
         prompt = PromptTemplate.from_template(
             """Provide a concise one-line summary of the main incident in the {complaint}, excluding names, locations, contact information and all irrlevant details and only return the offences committed, for extracting applicable sections and acts.
@@ -132,7 +150,8 @@ def get_summary(complaint):
 
 # Function to get similar docs
 def get_similar_docs(summary, vector_db):
-    retriever = vector_db.as_retriever(search_kwargs={"k":4})
+    retriever = vector_db.as_retriever(search_type="similarity_score_threshold", 
+                                       search_kwargs={"k":10, "score_threshold":0.7})
     similar_docs = retriever.get_relevant_documents(summary)
     return similar_docs # this will return the top 4 appliable charges on the given complaint
     print('result')
@@ -150,7 +169,6 @@ def text_split(extracted_data):
     return text_chunks
 
 # Function to create vector store
-# @st.cache_resource
 def vector_db(text_chunks):
     persist_directory = "db/"
     embeddings = HuggingFaceInstructEmbeddings(model_name='hkunlp/instructor-large',
@@ -168,7 +186,6 @@ def vector_db(text_chunks):
 file_path = 'results.xlsx'
 
 # Function to save summary and charges to Excel
-# @st.cache_resource
 def save_to_excel(summary, applicable_charges):
     # Create DataFrame with new entry
     new_entry = pd.DataFrame({'Summary': [summary], 'Applicable Charges': [applicable_charges]})
@@ -198,29 +215,54 @@ def extract_section_info(charge):
     else:
         return None
 
+
 # Streamlit App
 def main():
-    st.set_page_config(layout='wide')
     st.title("Legal Complaint Analysis App")
+    st.subheader("")
+    st.subheader("")
+    st.subheader("")
+    st.subheader("")
+    st.subheader("Enter Your Complaint:")
+    st.subheader("")
+    container0 = st.container()
+    with container0:
+        head0, empty0 = st.columns(spec=[6,4], gap="small")
+        with head0:
+            uploaded_file = st.file_uploader("Upload a PDF or image file:", type=["pdf", "png", "jpg", "jpeg"])
+            if uploaded_file:
+                image_paths = convert_and_extract_text(uploaded_file, 'output_folder')
+                text = extract_text(image_paths[0])  # Assuming only one image is processed
+            else:
+                text = st.text_area("Type your complaint:")
 
-    uploaded_file = st.file_uploader("Upload a PDF or image file:", type=["pdf", "png", "jpg", "jpeg"])
+        process_button = st.button("Process Complaint")
 
-    if uploaded_file:
-        image_paths = convert_and_extract_text(uploaded_file, 'output_folder')
-        text = extract_text(image_paths[0])  # Assuming only one image is processed
-    else:
-        text = st.text_area("Enter your complaint:")
+        with empty0:
+            st.empty()
 
-    if st.button("Process Complaint"):
-        # Translate large text
-        st.write(f"Original Text: {text}")  # Debugging info
+    if process_button:
+        st.subheader("")
+        st.subheader("")
+        st.subheader("")
+        container1 = st.container()
+        with container1:
+            head1, head2 = st.columns(spec=[5,5], gap="medium")
 
-        complaint = translate_large_text(text)
-        st.subheader("Translated Text:")
-        st.write(complaint)  # Debugging info
+            with head1:
+                # Translate large text
+                st.subheader("Original Text")
+                st.write(text)  # Debugging info
+
+            with head2:
+                complaint = translate_large_text(text)
+                st.subheader("Translated Text:")
+                st.write(complaint)  # Debugging info
 
         # Get summary
         summary = get_summary(complaint)
+        st.subheader("")
+        st.subheader("")
         st.subheader("Summary:")
         st.write(summary)
 
@@ -234,12 +276,18 @@ def main():
             {"Section": (entry.page_content.split("Section ")[1].split("\n")[0]), 
             "Description": entry.page_content.split("Description: ")[1].strip()}
             for entry in charges
-]
+            ]
         # Creating a DataFrame
         df = pd.DataFrame(sections_descriptions)
 
+        st.subheader("")
+        st.subheader("")
+        st.subheader("Applicable Charges:")
         # Display the DataFrame
-        st.dataframe(df, width=800)
+        st.dataframe(df, width=1400)
+
+        # Link to external site for more info
+        st.write('<a href="https://devgan.in/ipc/">More Info</a>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
